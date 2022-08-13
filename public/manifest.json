@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "UPIQR.me",
+  "name": "Create QR codes for UPI payments, quick and easy.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +20,5 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
   "background_color": "#ffffff"
 }
