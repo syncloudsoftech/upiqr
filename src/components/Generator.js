@@ -2,7 +2,6 @@ import axios from 'axios';
 import {
     Box,
     Button,
-    Container,
     Flex,
     FormControl,
     FormLabel,
@@ -81,187 +80,183 @@ function Generator() {
     };
 
     return (
-        <Container maxWidth="960px">
-            <Box my={10}>
+        <Flex
+            flexDirection="column"
+            gap={10}
+        >
+            <Flex
+                alignItems="center"
+                gap={5}
+            >
+                <Image
+                    alt="UPIQR.me"
+                    src={logo}
+                    sx={{ maxWidth: '4em' }}
+                />
+                <Flex flexDirection="column">
+                    <Text fontSize="1.5em" fontWeight="bold">UPIQR.me</Text>
+                    <Text>Create and download QR codes for UPI payments.</Text>
+                </Flex>
+            </Flex>
+            <SimpleGrid
+                columns={{ lg: 2  }}
+                spacing={10}
+            >
                 <Flex
+                    as="form"
                     flexDirection="column"
-                    gap={10}
+                    gap={5}
+                    onSubmit={submitForm}
+                >
+                    <FormControl>
+                        <FormLabel>Merchant name</FormLabel>
+                        <Input
+                            defaultValue={merchant}
+                            onChange={(e) => setMerchant(e.target.value)}
+                            type="text"
+                        />
+                        <FormHelperText>Enter your business name e.g., {defaultMerchant} (P) Ltd.</FormHelperText>
+                    </FormControl>
+                    <FormControl isRequired>
+                        <FormLabel>UPI ID or VPA</FormLabel>
+                        <Input
+                            defaultValue={vpa}
+                            onChange={(e) => setVpa(e.target.value)}
+                            required
+                            type="text"
+                        />
+                        <FormHelperText>Enter your virtual payment address e.g., {defaultVpa} etc.</FormHelperText>
+                    </FormControl>
+                    <FormControl>
+                        <FormLabel>Preset amount</FormLabel>
+                        <InputGroup>
+                            <InputLeftElement
+                                pointerEvents='none'
+                                color='gray.300'
+                                fontSize='1.25em'
+                                children='₹'
+                            />
+                            <Input
+                                defaultValue={amount}
+                                onChange={(e) => setAmount(e.target.value)}
+                            />
+                        </InputGroup>
+                        <FormHelperText>Enter any amount you want to collect with this QR code.</FormHelperText>
+                    </FormControl>
+                    <FormControl>
+                        <FormLabel>Notes</FormLabel>
+                        <Input
+                            defaultValue={notes}
+                            onChange={(e) => setNotes(e.target.value)}
+                        />
+                        <FormHelperText>Enter any reference notes for payments with this QR code.</FormHelperText>
+                    </FormControl>
+                    <SimpleGrid
+                        columns={{ md: 2  }}
+                        spacing={5}
+                    >
+                        <Button
+                            colorScheme="secondary"
+                            bg="secondary.700"
+                            isDisabled={isBusy}
+                            isLoading={isBusy}
+                            loadingText="Downloading..."
+                            onClick={() => setMode('poster')}
+                            type="submit"
+                        >
+                            Download poster
+                        </Button>
+                        <Button
+                            colorScheme="gray"
+                            isDisabled={isBusy}
+                            isLoading={isBusy}
+                            loadingText="Downloading..."
+                            onClick={() => setMode('qr')}
+                            type="submit"
+                        >
+                            Download QR Code
+                        </Button>
+                    </SimpleGrid>
+                </Flex>
+                <Box
+                    borderRadius="lg"
+                    borderWidth="1px"
+                    ref={ref}
+                    shadow="md"
+                    p={10}
                 >
                     <Flex
                         alignItems="center"
-                        gap={5}
+                        flexDirection="column"
+                        gap={10}
                     >
-                        <Image
-                            alt="UPIQR.me"
-                            src={logo}
-                            sx={{ maxWidth: '4em' }}
-                        />
-                        <Flex flexDirection="column">
-                            <Text fontSize="1.5em" fontWeight="bold">UPIQR.me</Text>
-                            <Text>Create and download QR codes for UPI payments.</Text>
-                        </Flex>
-                    </Flex>
-                    <SimpleGrid
-                        columns={{ lg: 2  }}
-                        spacing={10}
-                    >
+                        <Heading
+                            color="gray"
+                            fontSize="xl"
+                            textAlign="center"
+                            textTransform="uppercase"
+                        >
+                            {merchant || defaultMerchant}
+                        </Heading>
                         <Flex
-                            as="form"
+                            alignItems="center"
                             flexDirection="column"
-                            gap={5}
-                            onSubmit={submitForm}
                         >
-                            <FormControl>
-                                <FormLabel>Merchant name</FormLabel>
-                                <Input
-                                    defaultValue={merchant}
-                                    onChange={(e) => setMerchant(e.target.value)}
-                                    type="text"
-                                />
-                                <FormHelperText>Enter your business name e.g., {defaultMerchant} (P) Ltd.</FormHelperText>
-                            </FormControl>
-                            <FormControl isRequired>
-                                <FormLabel>UPI ID or VPA</FormLabel>
-                                <Input
-                                    defaultValue={vpa}
-                                    onChange={(e) => setVpa(e.target.value)}
-                                    required
-                                    type="text"
-                                />
-                                <FormHelperText>Enter your virtual payment address e.g., {defaultVpa} etc.</FormHelperText>
-                            </FormControl>
-                            <FormControl>
-                                <FormLabel>Preset amount</FormLabel>
-                                <InputGroup>
-                                    <InputLeftElement
-                                        pointerEvents='none'
-                                        color='gray.300'
-                                        fontSize='1.25em'
-                                        children='₹'
-                                    />
-                                    <Input
-                                        defaultValue={amount}
-                                        onChange={(e) => setAmount(e.target.value)}
-                                    />
-                                </InputGroup>
-                                <FormHelperText>Enter any amount you want to collect with this QR code.</FormHelperText>
-                            </FormControl>
-                            <FormControl>
-                                <FormLabel>Notes</FormLabel>
-                                <Input
-                                    defaultValue={notes}
-                                    onChange={(e) => setNotes(e.target.value)}
-                                />
-                                <FormHelperText>Enter any reference notes for payments with this QR code.</FormHelperText>
-                            </FormControl>
-                            <SimpleGrid
-                                columns={{ md: 2  }}
-                                spacing={5}
-                            >
-                                <Button
-                                    colorScheme="secondary"
-                                    bg="secondary.700"
-                                    isDisabled={isBusy}
-                                    isLoading={isBusy}
-                                    loadingText="Downloading..."
-                                    onClick={() => setMode('poster')}
-                                    type="submit"
-                                >
-                                    Download poster
-                                </Button>
-                                <Button
-                                    colorScheme="gray"
-                                    isDisabled={isBusy}
-                                    isLoading={isBusy}
-                                    loadingText="Downloading..."
-                                    onClick={() => setMode('qr')}
-                                    type="submit"
-                                >
-                                    Download QR Code
-                                </Button>
-                            </SimpleGrid>
+                            <Image
+                                src={qrCodeUrl}
+                                sx={{ maxHeight: '15em' }}
+                            />
+                            <Text>
+                                {vpa || defaultVpa}
+                            </Text>
                         </Flex>
-                        <Box
-                            borderRadius="lg"
-                            borderWidth="1px"
-                            ref={ref}
-                            shadow="md"
-                            p={10}
+                        <Text
+                            fontSize="lg"
+                            fontWeight="bold"
                         >
-                            <Flex
-                                alignItems="center"
-                                flexDirection="column"
-                                gap={10}
-                            >
-                                <Heading
-                                    color="gray"
-                                    fontSize="xl"
-                                    textAlign="center"
-                                    textTransform="uppercase"
-                                >
-                                    {merchant || defaultMerchant}
-                                </Heading>
-                                <Flex
-                                    alignItems="center"
-                                    flexDirection="column"
-                                >
-                                    <Image
-                                        src={qrCodeUrl}
-                                        sx={{ maxHeight: '15em' }}
-                                    />
-                                    <Text>
-                                        {vpa || defaultVpa}
-                                    </Text>
-                                </Flex>
-                                <Text
-                                    fontSize="lg"
-                                    fontWeight="bold"
-                                >
-                                    Scan to pay with any UPI app
-                                </Text>
-                                <Flex
-                                    alignItems="center"
-                                    sx={{ gap: 3 }}
-                                >
-                                    <Image
-                                        src={bhimLogo}
-                                        sx={{ height: '2em' }}
-                                    />
-                                    <Image
-                                        src={upiLogo}
-                                        sx={{ height: '2em' }}
-                                    />
-                                </Flex>
-                                <Flex
-                                    alignItems="center"
-                                    sx={{ gap: 3 }}
-                                >
-                                    <Image
-                                        src={paytmLogo}
-                                        sx={{ height: '2em' }}
-                                    />
-                                    <Image
-                                        src={phonePeLogo}
-                                        sx={{ height: '2em' }}
-                                    />
-                                    <Image
-                                        src={googlePayLogo}
-                                        sx={{ height: '2em' }}
-                                    />
-                                    <Image
-                                        src={amazonPayLogo}
-                                        sx={{ height: '2em' }}
-                                    />
-                                </Flex>
-                                <Text fontSize="sm">
-                                    Generated from <Link href="https://upiqr.me/">https://upiqr.me/</Link>
-                                </Text>
-                            </Flex>
-                        </Box>
-                    </SimpleGrid>
-                </Flex>
-            </Box>
-        </Container>
+                            Scan to pay with any UPI app
+                        </Text>
+                        <Flex
+                            alignItems="center"
+                            sx={{ gap: 3 }}
+                        >
+                            <Image
+                                src={bhimLogo}
+                                sx={{ height: '2em' }}
+                            />
+                            <Image
+                                src={upiLogo}
+                                sx={{ height: '2em' }}
+                            />
+                        </Flex>
+                        <Flex
+                            alignItems="center"
+                            sx={{ gap: 3 }}
+                        >
+                            <Image
+                                src={paytmLogo}
+                                sx={{ height: '2em' }}
+                            />
+                            <Image
+                                src={phonePeLogo}
+                                sx={{ height: '2em' }}
+                            />
+                            <Image
+                                src={googlePayLogo}
+                                sx={{ height: '2em' }}
+                            />
+                            <Image
+                                src={amazonPayLogo}
+                                sx={{ height: '2em' }}
+                            />
+                        </Flex>
+                        <Text fontSize="sm">
+                            Generated from <Link href="https://upiqr.me/">https://upiqr.me/</Link>
+                        </Text>
+                    </Flex>
+                </Box>
+            </SimpleGrid>
+        </Flex>
     );
 }
 

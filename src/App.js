@@ -1,5 +1,5 @@
 import { extendTheme, ChakraProvider } from '@chakra-ui/react';
-import Generator from './components/Generator';
+import HomePage from './pages/HomePage';
 
 const colors = {
     primary: {
@@ -31,7 +31,7 @@ const colors = {
 function App() {
     return (
         <ChakraProvider theme={extendTheme({ colors })}>
-            <Generator />
+            <HomePage />
         </ChakraProvider>
     );
 }
