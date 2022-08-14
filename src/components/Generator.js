@@ -236,19 +236,19 @@ function Generator() {
                         >
                             <Image
                                 src={paytmLogo}
-                                height={{ sm: '1em', lg: '1.5em' }}
+                                height={['1em', null, '1.5em']}
                             />
                             <Image
                                 src={phonePeLogo}
-                                height={{ sm: '1em', lg: '1.5em' }}
+                                height={['1em', null, '1.5em']}
                             />
                             <Image
                                 src={googlePayLogo}
-                                height={{ sm: '1em', lg: '1.5em' }}
+                                height={['1em', null, '1.5em']}
                             />
                             <Image
                                 src={amazonPayLogo}
-                                height={{ sm: '1em', lg: '1.5em' }}
+                                height={['1em', null, '1.5em']}
                             />
                         </Flex>
                         <Text fontSize="sm">
