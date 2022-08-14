@@ -7,6 +7,7 @@ import {
     FormControl,
     FormLabel,
     FormHelperText,
+    Heading,
     Image,
     Input,
     InputGroup,
@@ -16,10 +17,18 @@ import {
     Text,
 } from '@chakra-ui/react';
 import { saveAs } from 'file-saver';
+import html2canvas from 'html2canvas';
 import { createRef, useState } from 'react';
-import bhimLogo from '../images/bhim.svg';
+import amazonPayLogo from '../images/amazon-pay.png';
+import bhimLogo from '../images/bhim.png';
+import googlePayLogo from '../images/google-pay.png';
 import logo from '../images/logo.png';
-import upiLogo from '../images/upi.svg';
+import paytmLogo from '../images/paytm.png';
+import phonePeLogo from '../images/phonepe.png';
+import upiLogo from '../images/upi.png';
+
+const defaultMerchant = 'Your Company';
+const defaultVpa = 'example@upi';
 
 function Generator() {
     const [isBusy, setBusy] = useState(false);
@@ -27,10 +36,11 @@ function Generator() {
     const [vpa, setVpa] = useState('');
     const [amount, setAmount] = useState('');
     const [notes, setNotes] = useState('');
+    const [mode, setMode] = useState('');
 
     const paymentUrlParams = [
         'cu=INR',
-        `pa=${vpa || 'example@upi'}`,
+        `pa=${vpa || defaultVpa}`,
     ];
     if (amount) paymentUrlParams.push(`am=${amount}`);
     if (notes) paymentUrlParams.push(`tn=${notes}`);
@@ -38,7 +48,6 @@ function Generator() {
 
     const qrCodeUrlParams = [
         'format=png',
-        'margin=50',
         'size=1000x1000',
         'data=' + encodeURIComponent(paymentUrl),
     ];
@@ -46,13 +55,29 @@ function Generator() {
 
     const ref = createRef();
 
-    const submitForm = async (e) => {
-        e.preventDefault();
+    const downloadPoster = async () => {
+        setBusy(true);
+        const canvas = await html2canvas(ref.current, { useCORS: true });
+        const image = await new Promise((resolve) => canvas.toBlob((blob) => resolve(blob)));
+        setBusy(false);
+        saveAs(image, vpa + '-poster.png');
+    };
+
+    const downloadQrCode = async () => {
         setBusy(true);
         const image = await axios.get(qrCodeUrl, { responseType: 'blob' })
             .then(({ data }) => data);
         setBusy(false);
-        saveAs(image, 'upiqr.png');
+        saveAs(image, vpa + '-qr.png');
+    };
+
+    const submitForm = async (e) => {
+        e.preventDefault();
+        if (mode === 'qr') {
+            await downloadQrCode()
+        } else if (mode === 'poster') {
+            await downloadPoster();
+        }
     };
 
     return (
@@ -73,7 +98,7 @@ function Generator() {
                         />
                         <Flex flexDirection="column">
                             <Text fontSize="1.5em" fontWeight="bold">UPIQR.me</Text>
-                            <Text>Create and download QR codes for UPI payments online.</Text>
+                            <Text>Create and download QR codes for UPI payments.</Text>
                         </Flex>
                     </Flex>
                     <SimpleGrid
@@ -93,7 +118,7 @@ function Generator() {
                                     onChange={(e) => setMerchant(e.target.value)}
                                     type="text"
                                 />
-                                <FormHelperText>Enter your business name e.g., Syncloud Softech Inc.</FormHelperText>
+                                <FormHelperText>Enter your business name e.g., {defaultMerchant} (P) Ltd.</FormHelperText>
                             </FormControl>
                             <FormControl isRequired>
                                 <FormLabel>UPI ID or VPA</FormLabel>
@@ -103,7 +128,7 @@ function Generator() {
                                     required
                                     type="text"
                                 />
-                                <FormHelperText>Enter your virtual payment address e.g., handle@upi etc.</FormHelperText>
+                                <FormHelperText>Enter your virtual payment address e.g., {defaultVpa} etc.</FormHelperText>
                             </FormControl>
                             <FormControl>
                                 <FormLabel>Preset amount</FormLabel>
@@ -134,10 +159,12 @@ function Generator() {
                                 spacing={5}
                             >
                                 <Button
-                                    colorScheme="blue"
+                                    colorScheme="secondary"
+                                    bg="secondary.700"
                                     isDisabled={isBusy}
                                     isLoading={isBusy}
                                     loadingText="Downloading..."
+                                    onClick={() => setMode('poster')}
                                     type="submit"
                                 >
                                     Download poster
@@ -147,6 +174,7 @@ function Generator() {
                                     isDisabled={isBusy}
                                     isLoading={isBusy}
                                     loadingText="Downloading..."
+                                    onClick={() => setMode('qr')}
                                     type="submit"
                                 >
                                     Download QR Code
@@ -163,32 +191,30 @@ function Generator() {
                             <Flex
                                 alignItems="center"
                                 flexDirection="column"
-                                gap={5}
+                                gap={10}
                             >
-                                <Text
+                                <Heading
                                     color="gray"
-                                    fontSize="1.5em"
-                                    fontWeight="bold"
+                                    fontSize="xl"
                                     textAlign="center"
                                     textTransform="uppercase"
                                 >
-                                    {merchant || 'Business name'}
-                                </Text>
-                                <Image
-                                    src={qrCodeUrl}
-                                    sx={{ maxHeight: '15em' }}
-                                />
-                                <Link
-                                    color="text"
-                                    fontSize="1.25em"
-                                    href={paymentUrl}
-                                    sx={{ textDecoration: 'none' }}
+                                    {merchant || defaultMerchant}
+                                </Heading>
+                                <Flex
+                                    alignItems="center"
+                                    flexDirection="column"
                                 >
-                                    {vpa || 'example@upi'}
-                                </Link>
+                                    <Image
+                                        src={qrCodeUrl}
+                                        sx={{ maxHeight: '15em' }}
+                                    />
+                                    <Text>
+                                        {vpa || defaultVpa}
+                                    </Text>
+                                </Flex>
                                 <Text
-                                    color="gray"
-                                    fontSize="1.25em"
+                                    fontSize="lg"
                                     fontWeight="bold"
                                 >
                                     Scan to pay with any UPI app
@@ -206,6 +232,30 @@ function Generator() {
                                         sx={{ height: '2em' }}
                                     />
                                 </Flex>
+                                <Flex
+                                    alignItems="center"
+                                    sx={{ gap: 3 }}
+                                >
+                                    <Image
+                                        src={paytmLogo}
+                                        sx={{ height: '2em' }}
+                                    />
+                                    <Image
+                                        src={phonePeLogo}
+                                        sx={{ height: '2em' }}
+                                    />
+                                    <Image
+                                        src={googlePayLogo}
+                                        sx={{ height: '2em' }}
+                                    />
+                                    <Image
+                                        src={amazonPayLogo}
+                                        sx={{ height: '2em' }}
+                                    />
+                                </Flex>
+                                <Text fontSize="sm">
+                                    Generated from <Link href="https://upiqr.me/">https://upiqr.me/</Link>
+                                </Text>
                             </Flex>
                         </Box>
                     </SimpleGrid>
