@@ -29,6 +29,9 @@ function HomePage() {
                             Your data including merchant name, VPA or anything entered in the QR code generator is not stored with us.
                             The service works completely in browser and nothing is sent to our servers.
                         </Text>
+                        <Text>
+                            This website is also open-source (see <Link href="https://github.com/syncloudsoftech/upiqr" target="_blank">https://github.com/syncloudsoftech/upiqr</Link>) and code can be freely reviewed for extended concerns.
+                        </Text>
                         <Heading fontSize="large">Disclaimer</Heading>
                         <Text>
                             Names and logos shown are property of their respective owners.
@@ -47,7 +50,7 @@ function HomePage() {
                 bg="gray.200"
                 p={10}
             >
-                <Text textAlign="center"><Link href="https://syncloudsoft.com/">Syncloud Softech</Link> (P) Ltd. &copy; 2022</Text>
+                <Text textAlign="center"><Link href="https://syncloudsoft.com/" target="_blank">Syncloud Softech</Link> (P) Ltd. &copy; 2022</Text>
             </Box>
         </>
     )
