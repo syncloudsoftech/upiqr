@@ -175,7 +175,7 @@ function Generator() {
                             onClick={() => setMode('qr')}
                             type="submit"
                         >
-                            Download QR Code
+                            Download QR code
                         </Button>
                     </SimpleGrid>
                 </Flex>
