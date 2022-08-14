@@ -169,7 +169,14 @@ function Generator() {
             </Button>
           </SimpleGrid>
         </Flex>
-        <Box borderRadius="lg" borderWidth="1px" ref={ref} shadow="md" p={10}>
+        <Box
+          bg="white"
+          borderRadius="lg"
+          borderWidth="1px"
+          p={10}
+          ref={ref}
+          shadow="lg"
+        >
           <Flex alignItems="center" flexDirection="column" gap={10}>
             <Heading
               color="gray"
