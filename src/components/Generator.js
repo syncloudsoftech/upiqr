@@ -38,9 +38,10 @@ function Generator() {
     const [mode, setMode] = useState('');
 
     const paymentUrlParams = [
-        'cu=INR',
         `pa=${vpa || defaultVpa}`,
+        'cu=INR',
     ];
+    if (merchant) paymentUrlParams.push(`pn=${merchant}`);
     if (amount) paymentUrlParams.push(`am=${amount}`);
     if (notes) paymentUrlParams.push(`tn=${notes}`);
     const paymentUrl = 'upi://pay?' + paymentUrlParams.join('&');
