@@ -35,4 +35,6 @@ npm run build
 
 Finally, you can deploy the contents of [build](build) folder to server.
 
-Built with ❤️ love for 🇮🇳 India.
+## Credits
+
+Built with ❤️ love for 🇮🇳 India by [Syncloud Softech](https://syncloudsoft.com/).
