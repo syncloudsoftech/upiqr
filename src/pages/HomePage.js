@@ -4,11 +4,11 @@ import Generator from '../components/Generator';
 function HomePage() {
     return (
         <>
-            <Container maxW="960px">
-                <Box my={10}>
+            <Box py={10}>
+                <Container maxW="960px">
                     <Generator />
-                </Box>
-            </Container>
+                </Container>
+            </Box>
             <Box
                 as="section"
                 bg="gray.100"
@@ -26,7 +26,7 @@ function HomePage() {
                         </Text>
                         <Heading fontSize="large">Privacy</Heading>
                         <Text>
-                            Your data including merchant name, VPA or anything entered in the QR code generator is not stored with us.
+                            Your data including merchant name, VPA or anything entered in this UPI QR code generator is not stored with us.
                             The service works completely in browser and nothing is sent to our servers.
                         </Text>
                         <Text>
