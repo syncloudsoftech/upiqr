@@ -18,6 +18,7 @@ import {
 import { saveAs } from "file-saver";
 import html2canvas from "html2canvas";
 import { createRef, useState } from "react";
+import store from "store2";
 import amazonPayLogo from "../images/amazon-pay.png";
 import bhimLogo from "../images/bhim.png";
 import googlePayLogo from "../images/google-pay.png";
@@ -30,11 +31,13 @@ const defaultMerchant = "Your Company";
 const defaultVpa = "example@upi";
 
 function Generator() {
+  const oldInput = store.get("oldInput");
+
   const [isBusy, setBusy] = useState(false);
-  const [merchant, setMerchant] = useState("");
-  const [vpa, setVpa] = useState("");
-  const [amount, setAmount] = useState("");
-  const [notes, setNotes] = useState("");
+  const [merchant, setMerchant] = useState(oldInput?.merchant || "");
+  const [vpa, setVpa] = useState(oldInput?.vpa || "");
+  const [amount, setAmount] = useState(oldInput?.amount || "");
+  const [notes, setNotes] = useState(oldInput?.notes || "");
   const [mode, setMode] = useState("");
 
   const paymentUrlParams = [`pa=${vpa || defaultVpa}`, "cu=INR"];
@@ -79,6 +82,8 @@ function Generator() {
     } else if (mode === "poster") {
       await downloadPoster();
     }
+
+    store.set("oldInput", { merchant, vpa, amount, notes });
   };
 
   return (
