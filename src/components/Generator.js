@@ -41,9 +41,10 @@ function Generator() {
   const [mode, setMode] = useState("");
 
   const paymentUrlParams = [`pa=${vpa || defaultVpa}`, "cu=INR"];
-  if (merchant) paymentUrlParams.push(`pn=${merchant}`);
+  if (merchant)
+    paymentUrlParams.push(`pn=${encodeURIComponent(merchant + "")}`);
   if (amount) paymentUrlParams.push(`am=${amount}`);
-  if (notes) paymentUrlParams.push(`tn=${notes}`);
+  if (notes) paymentUrlParams.push(`tn=${encodeURIComponent(notes + "")}`);
   const paymentUrl = "upi://pay?" + paymentUrlParams.join("&");
 
   const qrCodeUrlParams = [
@@ -195,9 +196,15 @@ function Generator() {
               <Image src={qrCodeUrl} sx={{ maxHeight: "15em" }} />
               <Text>{vpa || defaultVpa}</Text>
             </Flex>
-            <Text fontSize="lg" fontWeight="bold">
-              Scan to pay with any UPI app
-            </Text>
+            {amount ? (
+              <Text fontSize="lg" fontWeight="bold">
+                Scan to pay ₹{amount} with any UPI app
+              </Text>
+            ) : (
+              <Text fontSize="lg" fontWeight="bold">
+                Scan to pay with any UPI app
+              </Text>
+            )}
             <Flex alignItems="center" sx={{ gap: 3 }}>
               <Image src={bhimLogo} sx={{ height: "2em" }} />
               <Image src={upiLogo} sx={{ height: "2em" }} />
