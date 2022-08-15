@@ -102,7 +102,7 @@ function Generator() {
               type="text"
             />
             <FormHelperText>
-              Enter your business name e.g., {defaultMerchant} (P) Ltd.
+              Enter your business name e.g., {defaultMerchant}.
             </FormHelperText>
           </FormControl>
           <FormControl isRequired>
