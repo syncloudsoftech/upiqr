@@ -40,10 +40,14 @@ function Generator() {
   const [notes, setNotes] = useState(oldInput?.notes || "");
   const [mode, setMode] = useState("");
 
-  const paymentUrlParams = [`pa=${vpa || defaultVpa}`, "cu=INR"];
+  const paymentUrlParams = [`pa=${vpa || defaultVpa}`];
   if (merchant)
     paymentUrlParams.push(`pn=${encodeURIComponent(merchant + "")}`);
-  if (amount) paymentUrlParams.push(`am=${amount}`);
+  if (amount) {
+    paymentUrlParams.push(`am=${amount}`);
+    paymentUrlParams.push("cu=INR");
+  }
+
   if (notes) paymentUrlParams.push(`tn=${encodeURIComponent(notes + "")}`);
   const paymentUrl = "upi://pay?" + paymentUrlParams.join("&");
 
