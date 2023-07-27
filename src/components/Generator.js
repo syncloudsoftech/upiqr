@@ -97,7 +97,7 @@ function Generator() {
         <Image alt="UPIQR" src={logo} sx={{ maxWidth: "4em" }} />
         <Flex flexDirection="column">
           <Text fontSize="1.5em" fontWeight="bold">
-            UPIQR.me
+            UPIQR
           </Text>
           <Text>Create and download QR codes for UPI payments.</Text>
         </Flex>
