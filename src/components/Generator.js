@@ -94,7 +94,7 @@ function Generator() {
   return (
     <Flex flexDirection="column" gap={10}>
       <Flex alignItems="center" gap={5}>
-        <Image alt="UPIQR.me" src={logo} sx={{ maxWidth: "4em" }} />
+        <Image alt="UPIQR" src={logo} sx={{ maxWidth: "4em" }} />
         <Flex flexDirection="column">
           <Text fontSize="1.5em" fontWeight="bold">
             UPIQR.me
@@ -221,7 +221,7 @@ function Generator() {
             </Flex>
             <Text fontSize="sm">
               Generated from{" "}
-              <Link href="https://upiqr.me/">https://upiqr.me/</Link>
+              <Link href="https://upiqr.syncloudsoft.com/">https://upiqr.syncloudsoft.com/</Link>
             </Text>
           </Flex>
         </Box>
